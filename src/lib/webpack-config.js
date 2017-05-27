@@ -16,7 +16,7 @@ import {
 } from "@webpack-blocks/webpack2";
 import babel from "@webpack-blocks/babel6";
 import devServer from "@webpack-blocks/dev-server2";
-import ExtractTextPlugin from "extract-css-chunks-webpack-plugin";
+import ExtractTextPlugin from "extract-text-webpack-plugin";
 import autoprefixer from "autoprefixer";
 import HtmlWebpackPlugin from "html-webpack-plugin";
 import ScriptExtHtmlWebpackPlugin from "script-ext-html-webpack-plugin";
@@ -65,7 +65,7 @@ export default env => {
       setOutput({
         path: resolve(cwd, env.dest || "build"),
         publicPath: "/",
-        filename: "app.[chunkhash].js",
+        filename: `app.[${isProd ? "chunkhash" : "hash"}].js`,
         chunkFilename: "[name].chunk.[chunkhash].js"
       }),
 
@@ -212,7 +212,7 @@ export default env => {
                 fallback: "style-loader",
                 use: [
                   `css-loader?modules&localIdentName=[local]__[hash:base64:5]&importLoaders=1&sourceMap=${isProd}`,
-                  `postcss-loader&sourceMap=${isProd}`
+                  `postcss-loader?sourceMap=${isProd}`
                 ]
               })
             },
@@ -221,7 +221,10 @@ export default env => {
               exclude: [src("components"), src("routes")],
               loader: ExtractTextPlugin.extract({
                 fallback: "style-loader",
-                use: [`css-loader?sourceMap=${isProd}`, `postcss-loader`]
+                use: [
+                  `css-loader?sourceMap=${isProd}`,
+                  `postcss-loader?sourceMap=${isProd}`
+                ]
               })
             }
           ]
@@ -320,7 +323,9 @@ export default env => {
       // produce HTML & CSS:
       addPlugins([
         new ExtractTextPlugin({
-          disable: !isProd
+          disable: !isProd,
+          filename: isProd ? "[name].[contenthash].css" : "[name].css",
+          allChunks: true
         })
       ]),
 
