@@ -464,7 +464,11 @@ const production = config =>
       navigateFallback: "index.html",
       minify: true,
       stripPrefix: config.cwd,
-      staticFileGlobsIgnorePatterns: [/\.map$/, /push-manifest\.json$/]
+      staticFileGlobsIgnorePatterns: [
+        /\.map$/,
+        /push-manifest\.json$/,
+        /assets\/icons/
+      ]
     })
   ]);
 
