@@ -345,7 +345,8 @@ export default env => {
         new webpack.NoEmitOnErrorsPlugin(),
 
         new ProgressBarPlugin({
-          format: "\u001b[90m\u001b[44mBuild\u001b[49m\u001b[39m [:bar] \u001b[32m\u001b[1m:percent\u001b[22m\u001b[39m (:elapseds) \u001b[2m:msg\u001b[22m",
+          format:
+            "\u001b[90m\u001b[44mBuild\u001b[49m\u001b[39m [:bar] \u001b[32m\u001b[1m:percent\u001b[22m\u001b[39m (:elapseds) \u001b[2m:msg\u001b[22m",
           renderThrottle: 100,
           summary: false,
           clear: true
@@ -476,7 +477,7 @@ const htmlPlugin = config =>
   addPlugins([
     new HtmlWebpackPlugin({
       filename: "index.html",
-      template: `!!ejs-loader!${config.template || resolve(__dirname, "../resources/template.html")}`,
+      template: `!!ejs-loader!${resolve(config.cwd, "template.html")}`,
       minify: config.production && {
         collapseWhitespace: true,
         removeScriptTypeAttributes: true,
@@ -491,11 +492,12 @@ const htmlPlugin = config =>
       inject: true,
       compile: true,
       preload: config.preload === true,
-      title: config.title ||
-        config.manifest.name ||
-        config.manifest.short_name ||
-        (config.pkg.name || "").replace(/^@[a-z]\//, "") ||
-        "Preact App",
+      title:
+        config.title ||
+          config.manifest.name ||
+          config.manifest.short_name ||
+          (config.pkg.name || "").replace(/^@[a-z]\//, "") ||
+          "Preact App",
       config,
       ssr(params) {
         return config.prerender ? prerender(config, params) : "";
