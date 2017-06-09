@@ -2,6 +2,7 @@ export default (env, options = {}) => ({
   presets: [
     [
       require.resolve("babel-preset-env"),
+      require.resolve("babel-preset-flow"),
       {
         loose: true,
         modules: options.modules || false,
