@@ -27,6 +27,7 @@ import SWPrecacheWebpackPlugin from "sw-precache-webpack-plugin";
 import createBabelConfig from "./babel-config";
 import prerender from "./prerender";
 import PushManifestPlugin from "./push-manifest";
+import OfflinePlugin from "offline-plugin";
 
 function exists(file) {
   try {
@@ -460,16 +461,19 @@ const production = config =>
       }
     }),
 
-    new SWPrecacheWebpackPlugin({
-      filename: "sw.js",
-      navigateFallback: "index.html",
-      minify: true,
-      stripPrefix: config.cwd,
-      staticFileGlobsIgnorePatterns: [
-        /\.map$/,
-        /push-manifest\.json$/,
-        /assets\/icons/
-      ]
+    new OfflinePlugin({
+      ServiceWorker: {
+        events: true
+      },
+      caches: {
+        main: ["*.css", "*.js"],
+        additional: [":externals:"],
+        optional: [":rest:"]
+      },
+      responseStrategy: "network-first",
+      excludes: ["assets/icons/*"],
+      externals: ["/"],
+      safeToUseOptionalCaches: true
     })
   ]);
 

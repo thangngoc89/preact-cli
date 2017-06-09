@@ -2,7 +2,6 @@ export default (env, options = {}) => ({
   presets: [
     [
       require.resolve("babel-preset-env"),
-      require.resolve("babel-preset-flow"),
       {
         loose: true,
         modules: options.modules || false,
@@ -13,6 +12,7 @@ export default (env, options = {}) => ({
         exclude: ["transform-regenerator", "transform-es2015-typeof-symbol"]
       }
     ],
+    require.resolve("babel-preset-flow"),
     require.resolve("babel-preset-stage-0")
   ],
   plugins: [
