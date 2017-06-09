@@ -38,5 +38,6 @@ export default (env, options = {}) => ({
         }
       }
     ]
-  ]
+  ],
+  retainLines: true
 });
