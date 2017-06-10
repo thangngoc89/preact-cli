@@ -383,6 +383,13 @@ const development = config => {
         compress: true,
         publicPath: "/",
         contentBase: resolve(config.cwd, config.src || "./src"),
+        proxy: {
+          "/api/v1": {
+            target: "http://localhost:3000",
+            pathRewrite: { "^/api/v1": "" },
+            secure: false
+          }
+        },
         // setup(app) {
         // 	app.use(middleware);
         // },
@@ -395,7 +402,8 @@ const development = config => {
         watchOptions: {
           ignored: [
             resolve(config.cwd, "build"),
-            resolve(config.cwd, "node_modules")
+            resolve(config.cwd, "node_modules"),
+            resolve(config.cwd, "cli")
           ]
         }
       },
