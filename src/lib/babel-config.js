@@ -1,3 +1,5 @@
+const { resolve } = require("path");
+
 export default (env, options = {}) => ({
   presets: [
     [

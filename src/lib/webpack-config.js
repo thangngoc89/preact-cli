@@ -92,7 +92,8 @@ export default env => {
             // preact-compat aliases for supporting React dependencies:
             react: "preact-compat",
             "react-dom": "preact-compat",
-            "react-addons-css-transition-group": "preact-css-transition-group"
+            "react-addons-css-transition-group": "preact-css-transition-group",
+            t: resolve(cwd, "style/design.css")
           }
         },
         resolveLoader: {
@@ -212,7 +213,9 @@ export default env => {
               loader: ExtractTextPlugin.extract({
                 fallback: "style-loader",
                 use: [
-                  `css-loader?modules&localIdentName=[local]__[hash:base64:5]&importLoaders=1&sourceMap=${isProd}`,
+                  `css-loader?modules&localIdentName=${isProd
+                    ? ""
+                    : "[local]__"}[hash:base64:5]&importLoaders=1&sourceMap=${isProd}`,
                   `postcss-loader?sourceMap=${isProd}`
                 ]
               })
@@ -474,13 +477,11 @@ const production = config =>
         events: true
       },
       caches: {
-        main: ["*.css", "*.js"],
-        additional: [":externals:"],
+        main: ["index.html", "*.css", "*.js"],
         optional: [":rest:"]
       },
       responseStrategy: "network-first",
       excludes: ["assets/icons/*"],
-      externals: ["/"],
       safeToUseOptionalCaches: true
     })
   ]);
