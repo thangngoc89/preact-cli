@@ -88,6 +88,7 @@ export default env => {
             "preact-cli-entrypoint": src("index.js"),
             "preact-cli-polyfills": resolve(__dirname, "polyfills.js"),
             style: src("style"),
+            src: src(""),
             preact$: isProd ? "preact/dist/preact.min.js" : "preact",
             // preact-compat aliases for supporting React dependencies:
             react: "preact-compat",
@@ -118,12 +119,12 @@ export default env => {
           )
             return true;
           let manifest = resolve(
-            filepath.replace(
-              /(.*([\/\\]node_modules|\.\.)[\/\\](@[^\/\\]+[\/\\])?[^\/\\]+)([\/\\].*)?$/g,
-              "$1"
+              filepath.replace(
+                /(.*([\/\\]node_modules|\.\.)[\/\\](@[^\/\\]+[\/\\])?[^\/\\]+)([\/\\].*)?$/g,
+                "$1"
+              ),
+              "package.json"
             ),
-            "package.json"
-          ),
             pkg = readJson(manifest) || {};
           return !!(pkg.module || pkg["jsnext:main"]);
         },
@@ -149,10 +150,10 @@ export default env => {
 
                   return isRoute
                     ? "route-" +
-                        relative.replace(
-                          /(^\/(routes|components\/(routes|async))\/|(\/index)?\.js$)/g,
-                          ""
-                        )
+                      relative.replace(
+                        /(^\/(routes|components\/(routes|async))\/|(\/index)?\.js$)/g,
+                        ""
+                      )
                     : false;
                 },
                 formatName(filename) {
@@ -507,10 +508,10 @@ const htmlPlugin = config =>
       preload: config.preload === true,
       title:
         config.title ||
-          config.manifest.name ||
-          config.manifest.short_name ||
-          (config.pkg.name || "").replace(/^@[a-z]\//, "") ||
-          "Preact App",
+        config.manifest.name ||
+        config.manifest.short_name ||
+        (config.pkg.name || "").replace(/^@[a-z]\//, "") ||
+        "Preact App",
       config,
       ssr(params) {
         return config.prerender ? prerender(config, params) : "";
