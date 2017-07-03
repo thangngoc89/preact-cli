@@ -392,6 +392,11 @@ const development = config => {
             target: "http://localhost:3000",
             pathRewrite: { "^/api/v1": "" },
             secure: false
+          },
+          "/api/v1/tasks": {
+            target: "http://localhost:3001/tasks",
+            pathRewrite: { "^/api/v1": "" },
+            secure: false
           }
         },
         // setup(app) {
