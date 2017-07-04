@@ -388,13 +388,13 @@ const development = config => {
         publicPath: "/",
         contentBase: resolve(config.cwd, config.src || "./src"),
         proxy: {
-          "/api/v1": {
-            target: "http://localhost:3000",
-            pathRewrite: { "^/api/v1": "" },
-            secure: false
-          },
           "/api/v1/tasks": {
             target: "http://localhost:3001/tasks",
+            pathRewrite: { "^/api/v1/tasks": "" },
+            secure: false
+          },
+          "/api/v1": {
+            target: "http://localhost:3000",
             pathRewrite: { "^/api/v1": "" },
             secure: false
           }
